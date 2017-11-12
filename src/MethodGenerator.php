@@ -19,6 +19,8 @@ class MethodGenerator implements GeneratorInterface
     private $parameters = [];
     private $returnType;
     private $body;
+    private $returnValue;
+    private $hasReturnValue = false;
 
     /**
      * Constructor.
@@ -90,6 +92,21 @@ class MethodGenerator implements GeneratorInterface
             ->addParameter(ParameterGenerator::create($property->getName(), $property->getType()))
             ->setBody(sprintf('$this->%1$s = $%1$s;', $property->getName()))
         ;
+    }
+
+    /**
+     * Sets the return value. If this is set, this will override the method body.
+     *
+     * @param mixed $value
+     *
+     * @return $this
+     */
+    public function return($value)
+    {
+        $this->returnValue = $value;
+        $this->hasReturnValue = true;
+
+        return $this;
     }
 
     /**
@@ -176,7 +193,13 @@ class MethodGenerator implements GeneratorInterface
             null === $this->returnType ? '' : ': '.$this->returnType
         );
         $php .= PHP_EOL.'{'.PHP_EOL;
-        $php .= Util::indent($this->body);
+
+        if ($this->hasReturnValue) {
+            $php .= Util::indent('return '.Util::export($this->returnValue).';');
+        } else {
+            $php .= Util::indent($this->body);
+        }
+
         $php .= PHP_EOL.'}';
 
         return $php;

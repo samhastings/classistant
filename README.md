@@ -144,6 +144,19 @@ $class = ClassGenerator::create('MyClass')
             ->setBody("return 'something';")
     )
 
+    // If a method simply needs to return a PHP value, you can specify the value
+    // and the script will write the appropriate method body for you. Note, this
+    // will take precedence over any past or future calls to `setBody()`.
+    ->addMethod(
+        MethodGenerator::create('getValidLocales')
+            ->return([
+                'en_GB',
+                'en_US',
+                'fr_FR',
+                'fr_CA',
+            ])
+    )
+
     // Variadic functions are supported.
     ->addMethod(
         MethodGenerator::create('addThings')
