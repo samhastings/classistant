@@ -1,0 +1,20 @@
+{
+    "name": "samhastings/classistant",
+    "description": "A fluent interface for generating PHP classes in PHP",
+    "homepage": "https://github.com/samhastings/classistant",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sam Hastings",
+            "homepage": "https://github.com/samhastings/"
+        }
+    ],
+    "require": {
+        "php": "^7"
+    },
+    "autoload": {
+        "psr-4": {
+            "SamHastings\\Classistant\\": "src/"
+        }
+    }
+}
