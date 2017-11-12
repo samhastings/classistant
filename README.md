@@ -91,10 +91,10 @@ $class = ClassGenerator::create('MyClass')
     )
 
     // You can also define the data type of the property. This affects the method
-    // signatures of the generated getter and setter methods
+    // signatures of the generated getter and setter methods.
     ->addProperty(PropertyGenerator::create('date', PropertyGenerator::PRIVATE, \DateTime::class))
 
-    // Of course, if you want to disable getter and setter generation, the second
+    // Of course, you may want to disable getter and setter generation. The second
     // and third arguments passed to addProperty() disable getters and setters,
     // respectively.
     ->addProperty(PropertyGenerator::create('date'), false, false)
