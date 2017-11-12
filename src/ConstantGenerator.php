@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SamHastings\Classistant;
 
+use SamHastings\Classistant\Exception\InvalidIdentifierException;
+
 class ConstantGenerator implements GeneratorInterface
 {
     private $name;
@@ -11,6 +13,13 @@ class ConstantGenerator implements GeneratorInterface
 
     public function __construct(string $name, $value)
     {
+        if (!Util::isValidIdentifier($name)) {
+            throw new InvalidIdentifierException(sprintf(
+                '%s is not a valid PHP identifier',
+                $name
+            ));
+        }
+
         $this->name = $name;
         $this->value = $value;
     }

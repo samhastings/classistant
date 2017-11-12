@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SamHastings\Classistant;
 
+use SamHastings\Classistant\Exception\InvalidIdentifierException;
+
 class MethodGenerator implements GeneratorInterface
 {
     const PUBLIC = 'public';
@@ -26,6 +28,13 @@ class MethodGenerator implements GeneratorInterface
      */
     public function __construct(string $name, string $visibility = self::PUBLIC)
     {
+        if (!Util::isValidIdentifier($name)) {
+            throw new InvalidIdentifierException(sprintf(
+                '%s is not a valid PHP identifier',
+                $name
+            ));
+        }
+
         $this->name = $name;
         $this->visibility = $visibility;
     }

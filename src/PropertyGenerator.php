@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SamHastings\Classistant;
 
+use SamHastings\Classistant\Exception\InvalidIdentifierException;
+
 class PropertyGenerator implements GeneratorInterface
 {
     const PUBLIC = 'public';
@@ -18,6 +20,13 @@ class PropertyGenerator implements GeneratorInterface
 
     public function __construct(string $name, string $visibility = self::PUBLIC, string $type = null)
     {
+        if (!Util::isValidIdentifier($name)) {
+            throw new InvalidIdentifierException(sprintf(
+                '%s is not a valid PHP identifier',
+                $name
+            ));
+        }
+
         $this->name = $name;
         $this->visibility = $visibility;
         $this->type = $type;

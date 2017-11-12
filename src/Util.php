@@ -17,6 +17,22 @@ class Util
     }
 
     /**
+     * Checks that the supplied identifier is suitable for use as a PHP class,
+     * variable, method, etc name.
+     *
+     * @param string $identifier
+     *
+     * @return bool
+     */
+    public static function isValidIdentifier($identifier)
+    {
+        // http://www.php.net/manual/en/language.variables.basics.php
+        $pattern = '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/';
+
+        return 1 === preg_match($pattern, $identifier);
+    }
+
+    /**
      * Wrapper for PHP’s var_export function that also allows PHP literals to
      * be passed as Expression instances.
      *
