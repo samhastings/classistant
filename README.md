@@ -147,7 +147,7 @@ $class = ClassGenerator::create('MyClass')
 ;
 
 // To write the output to a file, use the FileGenerator class.
-$file = FileGenerator::create()
+FileGenerator::create()
     ->setStrictTypes(true)
     ->setBody($class)
     ->writeTo(__DIR__.'/classes/MyClass.php')
@@ -155,7 +155,7 @@ $file = FileGenerator::create()
 
 // Alternatively, you can capture the output of FileGenerator and do whatever
 // you want with it.
-$file = FileGenerator::create()
+$php = FileGenerator::create()
     ->setStrictTypes(true)
     ->setBody($class)
     ->getPhp()
