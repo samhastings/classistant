@@ -1,4 +1,4 @@
-# classistant
+# Classistant
 
 Classistant provides a fluent interface for generating PHP classes in PHP.
 
