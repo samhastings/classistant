@@ -16,5 +16,10 @@
         "psr-4": {
             "SamHastings\\Classistant\\": "src/"
         }
-    }
+    },
+    "keywords": [
+        "class",
+        "code",
+        "generator"
+    ]
 }
