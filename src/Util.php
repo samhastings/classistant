@@ -24,7 +24,7 @@ class Util
      *
      * @return bool
      */
-    public static function isValidIdentifier($identifier)
+    public static function isValidIdentifier(string $identifier): bool
     {
         // http://www.php.net/manual/en/language.variables.basics.php
         $pattern = '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/';
@@ -57,7 +57,7 @@ class Util
      *
      * @return string
      */
-    public static function indent($code, $depth = 1)
+    public static function indent(string $code, int $depth = 1): string
     {
         $indented = preg_replace('/^/m', str_repeat(self::$indentChar, self::$indentWidth * $depth), $code);
         $indented = preg_replace('/^\s+$/m', '', $indented);
