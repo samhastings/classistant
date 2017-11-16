@@ -64,16 +64,17 @@ $class = ClassGenerator::create('MyClass')
     // Create the class inside a namespace if you wish.
     ->setNamespace('This\\Is\\My\\Namespace')
 
-    // You can extend a single class...
-    ->extends(ExtendMe::class)
+    // You can extend a single class... (see note below for explanation of why the
+    // leading backslash is required.)
+    ->extends('\\'.ExtendMe::class)
 
     // ...implement multiple interfaces...
-    ->implements(ImplementMe::class)
-    ->implements(ImplementMeToo::class)
+    ->implements('\\'.ImplementMe::class)
+    ->implements('\\'.ImplementMeToo::class)
 
     // ...and use multiple traits.
-    ->use(UseMe::class)
-    ->use(UseMeToo::class)
+    ->use('\\'.UseMe::class)
+    ->use('\\'.UseMeToo::class)
 
     // Constants are defined in the ConstantGenerator class.
     ->addConstant(ConstantGenerator::create('CONSTANT_NAME', 'value'))
@@ -108,7 +109,7 @@ $class = ClassGenerator::create('MyClass')
 
     // You can also define the data type of the property. This affects the method
     // signatures of the generated getter and setter methods.
-    ->addProperty(PropertyGenerator::create('date', PropertyGenerator::PRIVATE, \DateTime::class))
+    ->addProperty(PropertyGenerator::create('date', PropertyGenerator::PRIVATE, '\\'.\DateTime::class))
 
     // Of course, you may want to disable getter and setter generation. The second
     // and third arguments passed to addProperty() disable getters and setters,
@@ -123,7 +124,7 @@ $class = ClassGenerator::create('MyClass')
             ->addParameter(ParameterGenerator::create('name'))
 
             // You can type-hint a parameter.
-            ->addParameter(ParameterGenerator::create('date', \DateTime::class))
+            ->addParameter(ParameterGenerator::create('date', '\\'.\DateTime::class))
 
             // You can also specify a default value for the parameter, making it
             // optional.
@@ -190,3 +191,9 @@ $php = FileGenerator::create()
     ->getPhp()
 ;
 ```
+
+### A note on class resolution
+
+The `::class` constant, available on all classes, interfaces and traits as of PHP 5.5, provides a handy shortcut for fetching a fully-qualified class name. This will *never* contain a leading backslash, as a class name in a string is always treated by PHP as being relative to the global namespace when called with the `new` operator.
+
+Whenever you’re using Classistant to generate namespaced classes, *always* prepend a backslash to arguments passed to `ClassGenerator::extends()`, `ClassGenerator::implements()` and `ClassGenerator::use()`. The same rules apply if you’re passing a class or interface name as a method parameter or return type. Otherwise, your generated code will generate a fatal error as PHP looks for said class names in the same namespace as your generated class.
