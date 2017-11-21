@@ -13,9 +13,10 @@ class MethodGenerator implements GeneratorInterface
     const PROTECTED = 'protected';
 
     private $name;
+    private $abstract = false;
+    private $final = false;
     private $visibility;
     private $static = false;
-    private $abstract = false;
     private $parameters = [];
     private $returnType;
     private $body;
@@ -52,6 +53,30 @@ class MethodGenerator implements GeneratorInterface
     public static function create(string $name, string $visibility = self::PUBLIC)
     {
         return new self($name, $visibility);
+    }
+
+    /**
+     * Declares an abstract method
+     *
+     * @return $this
+     */
+    public function abstract()
+    {
+        $this->abstract = true;
+
+        return $this;
+    }
+
+    /**
+     * Declares a final method
+     *
+     * @return $this
+     */
+    public function final()
+    {
+        $this->final = true;
+
+        return $this;
     }
 
     /**
@@ -185,22 +210,29 @@ class MethodGenerator implements GeneratorInterface
     public function getPhp(): string
     {
         $php = sprintf(
-            '%s%s function %s(%s)%s',
+            '%s%s%s%s function %s(%s)%s',
+            $this->final ? 'final ' : '',
+            $this->abstract ? 'abstract ' : '',
             $this->visibility,
             $this->static ? ' static' : '',
             $this->name,
             Util::group($this->parameters, ', '),
             null === $this->returnType ? '' : ': '.$this->returnType
         );
-        $php .= PHP_EOL.'{'.PHP_EOL;
 
-        if ($this->hasReturnValue) {
-            $php .= Util::indent('return '.Util::export($this->returnValue).';');
+        if ($this->abstract) {
+            $php .= ';'.PHP_EOL.PHP_EOL;
         } else {
-            $php .= Util::indent($this->body);
-        }
+            $php .= PHP_EOL.'{'.PHP_EOL;
 
-        $php .= PHP_EOL.'}';
+            if ($this->hasReturnValue) {
+                $php .= Util::indent('return '.Util::export($this->returnValue).';');
+            } else {
+                $php .= Util::indent($this->body);
+            }
+
+            $php .= PHP_EOL.'}';
+        }
 
         return $php;
     }

@@ -9,6 +9,8 @@ use SamHastings\Classistant\Exception\InvalidIdentifierException;
 class ClassGenerator implements GeneratorInterface
 {
     private $name;
+    private $abstract = false;
+    private $final = false;
     private $namespace;
     private $parent;
     private $interfaces = [];
@@ -32,6 +34,30 @@ class ClassGenerator implements GeneratorInterface
     public static function create(string $name)
     {
         return new self($name);
+    }
+
+    /**
+     * Declares an abstract class
+     *
+     * @return $this
+     */
+    public function abstract()
+    {
+        $this->abstract = true;
+
+        return $this;
+    }
+
+    /**
+     * Declares a final class
+     *
+     * @return $this
+     */
+    public function final()
+    {
+        $this->final = true;
+
+        return $this;
     }
 
     public function setNamespace(string $namespace)
@@ -100,7 +126,12 @@ class ClassGenerator implements GeneratorInterface
             $php .= PHP_EOL.PHP_EOL;
         }
 
-        $php .= sprintf('class %s ', $this->name);
+        $php .= sprintf(
+            '%s%sclass %s ',
+            $this->abstract ? 'abstract ' : '',
+            $this->final ? 'final ' : '',
+            $this->name
+        );
 
         if (null !== $this->parent) {
             $php .= sprintf('extends %s ', $this->parent);

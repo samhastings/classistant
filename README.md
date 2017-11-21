@@ -15,9 +15,9 @@ Classistant requires PHP 7.0 or higher, both to run the code generator and to ru
 Currently, Classistant does not support any of the following features. I do however plan to implement these in the future.
 
 - Nullable parameter/return types, as found in PHP 7.1 and above.
-- Abstract classes or methods.
 - Anonymous class generation.
 - Class constant visibility.
+- Declaring a method as `abstract` without also declaring the class as such will throw a fatal error in PHP. No such warning is thrown when trying to generate such code with Classistant.
 
 ## Installation
 
@@ -75,6 +75,12 @@ $class = ClassGenerator::create('MyClass')
     // ...and use multiple traits.
     ->use('\\'.UseMe::class)
     ->use('\\'.UseMeToo::class)
+
+    // Make it abstract..
+    ->abstract()
+
+    // ...or final.
+    ->final()
 
     // Constants are defined in the ConstantGenerator class.
     ->addConstant(ConstantGenerator::create('CONSTANT_NAME', 'value'))
@@ -168,11 +174,19 @@ $class = ClassGenerator::create('MyClass')
             ->setBody('$this->things = $things;')
     )
 
-    // A method can also be static.
+    // A method can also be static or final.
     ->addMethod(
         MethodGenerator::create('doSomethingElse')
             ->static()
+            ->final()
             ->setBody('return true;')
+    )
+
+    // And finally, it can be abstract, in which case any body you specify will
+    // be ignored.
+    ->addMethod(
+        MethodGenerator::create('implementMe')
+            ->abstract()
     )
 ;
 
