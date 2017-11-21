@@ -8,17 +8,13 @@ use SamHastings\Classistant\Exception\InvalidIdentifierException;
 
 class PropertyGenerator implements GeneratorInterface
 {
-    const PUBLIC = 'public';
-    const PRIVATE = 'private';
-    const PROTECTED = 'protected';
-
     private $name;
     private $visibility;
     private $type;
     private $defaultValue;
     private $static = false;
 
-    public function __construct(string $name, string $visibility = self::PUBLIC, string $type = null)
+    public function __construct(string $name, string $visibility = Visibility::PUBLIC, string $type = null)
     {
         if (!Util::isValidIdentifier($name)) {
             throw new InvalidIdentifierException(sprintf(
@@ -32,7 +28,7 @@ class PropertyGenerator implements GeneratorInterface
         $this->type = $type;
     }
 
-    public static function create(string $name, string $visibility = self::PUBLIC, string $type = null)
+    public static function create(string $name, string $visibility = Visibility::PUBLIC, string $type = null)
     {
         return new self($name, $visibility, $type);
     }

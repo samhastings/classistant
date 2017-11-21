@@ -57,7 +57,8 @@ use SamHastings\Classistant\{
     FileGenerator,
     MethodGenerator,
     ParameterGenerator,
-    PropertyGenerator
+    PropertyGenerator,
+    Visibility
 };
 
 $class = ClassGenerator::create('MyClass')
@@ -87,15 +88,15 @@ $class = ClassGenerator::create('MyClass')
 
     // Let’s add a couple of properties. The default visibility is public. When
     // you add a property, getter and setter methods are automatically generated.
-    ->addProperty(PropertyGenerator::create('myPublicProperty', PropertyGenerator::PUBLIC))
-    ->addProperty(PropertyGenerator::create('myPrivateProperty', PropertyGenerator::PRIVATE))
-    ->addProperty(PropertyGenerator::create('myProtectedProperty', PropertyGenerator::PROTECTED))
+    ->addProperty(PropertyGenerator::create('myPublicProperty', Visibility::PUBLIC))
+    ->addProperty(PropertyGenerator::create('myPrivateProperty', Visibility::PRIVATE))
+    ->addProperty(PropertyGenerator::create('myProtectedProperty', Visibility::PROTECTED))
 
     // You can also specify the property’s default value. When the property’s type
     // is set to `bool`, the accessor method name changes to `is*`. In all other
     // cases, the name will be `get*`.
     ->addProperty(
-        PropertyGenerator::create('active', PropertyGenerator::PRIVATE, 'bool')
+        PropertyGenerator::create('active', Visibility::PRIVATE, 'bool')
             ->setDefaultValue(true)
     )
 
@@ -109,13 +110,13 @@ $class = ClassGenerator::create('MyClass')
     // Use the Expression class to set a PHP expression as a property’s default
     // value. This can also be used when defining default parameter values.
     ->addProperty(
-        PropertyGenerator::create('foo', PropertyGenerator::PRIVATE)
+        PropertyGenerator::create('foo', Visibility::PRIVATE)
             ->setDefaultValue(Expression::create('self::CONSTANT_NAME'))
     )
 
     // You can also define the data type of the property. This affects the method
     // signatures of the generated getter and setter methods.
-    ->addProperty(PropertyGenerator::create('date', PropertyGenerator::PRIVATE, '\\'.\DateTime::class))
+    ->addProperty(PropertyGenerator::create('date', Visibility::PRIVATE, '\\'.\DateTime::class))
 
     // Of course, you may want to disable getter and setter generation. The second
     // and third arguments passed to addProperty() disable getters and setters,
@@ -125,7 +126,7 @@ $class = ClassGenerator::create('MyClass')
     // Methods are public by default, but visibility can be changed as with
     // properties.
     ->addMethod(
-        MethodGenerator::create('doSomething', MethodGenerator::PRIVATE)
+        MethodGenerator::create('doSomething', Visibility::PRIVATE)
             // Add a plain old parameter.
             ->addParameter(ParameterGenerator::create('name'))
 

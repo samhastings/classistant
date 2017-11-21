@@ -8,10 +8,6 @@ use SamHastings\Classistant\Exception\InvalidIdentifierException;
 
 class MethodGenerator implements GeneratorInterface
 {
-    const PUBLIC = 'public';
-    const PRIVATE = 'private';
-    const PROTECTED = 'protected';
-
     private $name;
     private $abstract = false;
     private $final = false;
@@ -29,7 +25,7 @@ class MethodGenerator implements GeneratorInterface
      * @param string $name
      * @param string $visibility
      */
-    public function __construct(string $name, string $visibility = self::PUBLIC)
+    public function __construct(string $name, string $visibility = Visibility::PUBLIC)
     {
         if (!Util::isValidIdentifier($name)) {
             throw new InvalidIdentifierException(sprintf(
@@ -50,7 +46,7 @@ class MethodGenerator implements GeneratorInterface
      *
      * @return $this
      */
-    public static function create(string $name, string $visibility = self::PUBLIC)
+    public static function create(string $name, string $visibility = Visibility::PUBLIC)
     {
         return new self($name, $visibility);
     }
@@ -87,7 +83,7 @@ class MethodGenerator implements GeneratorInterface
      *
      * @return self
      */
-    public static function createGetter(PropertyGenerator $property, string $visibility = self::PUBLIC)
+    public static function createGetter(PropertyGenerator $property, string $visibility = Visibility::PUBLIC)
     {
         $type = $property->getType();
         $prefix = $type === 'bool' ? 'is' : 'get';
@@ -111,7 +107,7 @@ class MethodGenerator implements GeneratorInterface
      *
      * @return $this
      */
-    public static function createSetter(PropertyGenerator $property, string $visibility = self::PUBLIC)
+    public static function createSetter(PropertyGenerator $property, string $visibility = Visibility::PUBLIC)
     {
         return self::create('set'.ucfirst($property->getName()), $visibility)
             ->addParameter(ParameterGenerator::create($property->getName(), $property->getType()))
