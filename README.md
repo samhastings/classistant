@@ -31,16 +31,16 @@ composer require samhastings/classistant
 
 There’s not much this library offers in the way of configuration, apart from allowing you to customise the automatic indentation to match your personal preference.
 
-By default, generated code is indented with four spaces. Override this as you wish with the following `Util` class properties.
+By default, generated code is indented with four spaces. Override this as you wish with the following `Config` class properties.
 
 ```php
 // Four spaces (default behaviour)
-\SamHastings\Classistant\Util::$indentChar = ' ';
-\SamHastings\Classistant\Util::$indentWidth = 4;
+\SamHastings\Classistant\Config::$indentChar = ' ';
+\SamHastings\Classistant\Config::$indentWidth = 4;
 
 // Tab
-\SamHastings\Classistant\Util::$indentChar = "\t";
-\SamHastings\Classistant\Util::$indentWidth = 1;
+\SamHastings\Classistant\Config::$indentChar = "\t";
+\SamHastings\Classistant\Config::$indentWidth = 1;
 ```
 
 ## Usage

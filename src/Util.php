@@ -6,9 +6,6 @@ namespace SamHastings\Classistant;
 
 class Util
 {
-    public static $indentChar = ' ';
-    public static $indentWidth = 4;
-
     /**
      * This class must not be instantiated
      */
@@ -59,7 +56,7 @@ class Util
      */
     public static function indent(string $code, int $depth = 1): string
     {
-        $indented = preg_replace('/^/m', str_repeat(self::$indentChar, self::$indentWidth * $depth), $code);
+        $indented = preg_replace('/^/m', str_repeat(Config::$indentChar, Config::$indentWidth * $depth), $code);
         $indented = preg_replace('/^\s+$/m', '', $indented);
 
         return $indented;
