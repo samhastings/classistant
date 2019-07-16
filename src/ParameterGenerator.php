@@ -8,6 +8,7 @@ class ParameterGenerator implements GeneratorInterface
 {
     private $name;
     private $type;
+    private $nullable;
     private $defaultValue;
     private $hasDefaultValue = false;
     private $variadic = false;
@@ -38,10 +39,18 @@ class ParameterGenerator implements GeneratorInterface
         return $this;
     }
 
+    public function nullable()
+    {
+        $this->nullable = true;
+
+        return $this;
+    }
+
     public function getPhp(): string
     {
         $php = sprintf(
-            '%s %s$%s',
+            '%s%s %s$%s',
+            $this->nullable && $this->type ? '?' : '',
             $this->type,
             $this->variadic ? '...' : '',
             $this->name

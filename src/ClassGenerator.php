@@ -144,7 +144,7 @@ class ClassGenerator implements GeneratorInterface
         $php .= PHP_EOL.'{'.PHP_EOL;
 
         if ($this->traits) {
-            $php .= Util::indent(sprintf('use %s; ', implode(', ', $this->traits)));
+            $php .= Util::indent(sprintf('use %s;', implode(', ', $this->traits)));
             $php .= PHP_EOL.PHP_EOL;
         }
 

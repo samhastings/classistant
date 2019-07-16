@@ -10,8 +10,9 @@ class ConstantGenerator implements GeneratorInterface
 {
     private $name;
     private $value;
+    private $visibility;
 
-    public function __construct(string $name, $value)
+    public function __construct(string $name, $value, string $visibility = null)
     {
         if (!Util::isValidIdentifier($name)) {
             throw new InvalidIdentifierException(sprintf(
@@ -22,16 +23,22 @@ class ConstantGenerator implements GeneratorInterface
 
         $this->name = $name;
         $this->value = $value;
+        $this->visibility = $visibility;
     }
 
-    public static function create(string $name, $value)
+    public static function create(string $name, $value, string $visibility = null)
     {
-        return new self($name, $value);
+        return new self($name, $value, $visibility);
     }
 
     public function getPhp(): string
     {
-        return sprintf('const %s = %s;', $this->name, Util::export($this->value));
+        return sprintf(
+            '%sconst %s = %s;',
+            $this->visibility ? $this->visibility.' ' : '',
+            $this->name,
+            Util::export($this->value)
+        );
     }
 
     public function __toString()

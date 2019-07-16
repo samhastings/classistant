@@ -15,6 +15,7 @@ class MethodGenerator implements GeneratorInterface
     private $static = false;
     private $parameters = [];
     private $returnType;
+    private $nullable;
     private $body;
     private $returnValue;
     private $hasReturnValue = false;
@@ -160,12 +161,14 @@ class MethodGenerator implements GeneratorInterface
      * Sets the method’s return type.
      *
      * @param string $returnType
+     * @param bool   $nullable
      *
      * @return $this
      */
-    public function setReturnType(string $returnType)
+    public function setReturnType(string $returnType, bool $nullable = false)
     {
         $this->returnType = $returnType;
+        $this->nullable = $nullable;
 
         return $this;
     }
@@ -213,7 +216,7 @@ class MethodGenerator implements GeneratorInterface
             $this->static ? ' static' : '',
             $this->name,
             Util::group($this->parameters, ', '),
-            null === $this->returnType ? '' : ': '.$this->returnType
+            null === $this->returnType ? '' : sprintf(': %s%s', $this->nullable ? '?' : '', $this->returnType)
         );
 
         if ($this->abstract) {
