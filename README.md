@@ -14,10 +14,9 @@ Classistant requires PHP 7.0 or higher, both to run the code generator and to ru
 
 Currently, Classistant does not support any of the following features. I do however plan to implement these in the future.
 
-- Nullable parameter/return types, as found in PHP 7.1 and above.
 - Anonymous class generation.
-- Class constant visibility.
 - Declaring a method as `abstract` without also declaring the class as such will throw a fatal error in PHP. No such warning is thrown when trying to generate such code with Classistant.
+- Interface generation.
 
 ## Installation
 
@@ -86,6 +85,9 @@ $class = ClassGenerator::create('MyClass')
     // Constants are defined in the ConstantGenerator class.
     ->addConstant(ConstantGenerator::create('CONSTANT_NAME', 'value'))
 
+    // You can change the visibility of a constant. (PHP 7.1+ only.)
+    ->addConstant(ConstantGenerator::create('PRIVATE_CONSTANT', 42, Visibility::PRIVATE))
+
     // Let’s add a couple of properties. The default visibility is public. When
     // you add a property, getter and setter methods are automatically generated.
     ->addProperty(PropertyGenerator::create('myPublicProperty', Visibility::PUBLIC))
@@ -144,9 +146,15 @@ $class = ClassGenerator::create('MyClass')
                     ->setDefaultValue('red')
             )
 
-            // Return types are supported, but PHP 7.1’s nullable return types
-            // aren’t... yet.
-            ->setReturnType('string')
+            // And you can mark the parameter type as nullable. (PHP 7.1+ only.)
+            ->addParameter(
+                ParameterGenerator::create('age', 'int')
+                    ->nullable()
+            )
+
+            // Return types are supported. Pass `true` as the second argument to
+            // make the return value nullable. (PHP 7.1+ only.)
+            ->setReturnType('string', true)
 
             // The method body is just a string.
             ->setBody("return 'something';")
